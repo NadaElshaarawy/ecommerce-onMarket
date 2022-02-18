@@ -1,0 +1,45 @@
+image: node:12.18.4
+pipelines:
+  default:
+    - step:
+        caches:
+          - node
+
+        script:
+          - npm install
+          # - npm test
+  branches:
+
+    staging:
+      - step:
+          name: deployment
+          caches:
+            - node
+          deployment: production
+          script:
+            - npm install
+            - npm run build
+            # - npm run test
+            - pipe: atlassian/ssh-run:0.2.2
+              variables:
+                SSH_USER: $DEPLOY_USER
+                SERVER: $DEPLOY_HOST
+                COMMAND: 'deploy-staging.sh'
+                MODE: 'script'
+
+    master:
+      - step:
+          name: deployment
+          caches:
+            - node
+          deployment: production
+          script:
+            - npm install
+            - npm run build
+            # - npm run test
+            - pipe: atlassian/ssh-run:0.2.2
+              variables:
+                SSH_USER: $DEPLOY_USER
+                SERVER: $DEPLOY_HOST
+                COMMAND: 'deploy.sh'
+                MODE: 'script'

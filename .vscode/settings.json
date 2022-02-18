@@ -1,0 +1,15 @@
+{
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "editor.formatOnSave": true,
+  "editor.fontLigatures": true,
+  "files.autoSave": "off",
+  "explorer.sortOrder": "type",
+  "editor.cursorStyle": "line-thin",
+  "files.trimFinalNewlines": true,
+  "editor.acceptSuggestionOnEnter": "on",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
