@@ -9,6 +9,9 @@ export class UserResolver {
   //** --------------------- QUERIES --------------------- */
   @Query(returns => Timestamp)
   async me() {
+    const users = await User.paginate();
+    console.log(users);
+
     return new Date().getTime();
   }
   //** --------------------- MUTATIONS --------------------- */
