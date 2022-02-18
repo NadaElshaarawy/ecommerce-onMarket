@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { GqlConfigService } from './_common/graphql/graphql-provider';
 import { AuthModule } from './Auth/auth.module';
 import { Timestamp } from './_common/graphql/timestamp.scalar';
+import { HelperModule } from './utils/helper.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { Timestamp } from './_common/graphql/timestamp.scalar';
     }),
     DatabaseModule,
     UserModule,
-    AuthModule
+    AuthModule,
+    HelperModule
   ],
   providers: [Timestamp]
 })
