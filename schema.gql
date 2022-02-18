@@ -35,7 +35,8 @@ type Query {
 scalar Timestamp
 
 type Mutation {
-  signUp(input: SignUpInput!): User!
+  signup(input: SignUpInput!): User!
+  login(input: LoginInput!): User!
 }
 
 input SignUpInput {
@@ -46,4 +47,9 @@ input SignUpInput {
   phone: String!
   password: String!
   country: String!
+}
+
+input LoginInput {
+  phone: String!
+  password: String!
 }
