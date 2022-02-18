@@ -5,16 +5,20 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ScheduleModule } from '@nestjs/schedule';
 import { UserModule } from './user/user.module';
 import { GqlConfigService } from './_common/graphql/graphql-provider';
+import { AuthModule } from './Auth/auth.module';
+import { Timestamp } from './_common/graphql/timestamp.scalar';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     ScheduleModule.forRoot(),
-    DatabaseModule,
-    UserModule,
     GraphQLModule.forRootAsync({
       useClass: GqlConfigService
-    })
-  ]
+    }),
+    DatabaseModule,
+    UserModule,
+    AuthModule
+  ],
+  providers: [Timestamp]
 })
 export class AppModule {}
