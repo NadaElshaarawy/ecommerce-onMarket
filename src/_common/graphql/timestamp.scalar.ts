@@ -19,8 +19,8 @@ export class Timestamp implements CustomScalar<number, number> {
   }
 
   parseLiteral(ast) {
-    if (ast.kind !== Kind.STRING)
+    if (ast.kind !== Kind.INT)
       throw new GraphQLError(`Can only parse timestamps to dates but got a: ${ast.kind}`);
-    return ast.value;
+    return this.parseValue(ast.value);
   }
 }

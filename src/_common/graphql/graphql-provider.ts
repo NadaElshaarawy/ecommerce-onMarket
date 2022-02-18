@@ -1,11 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
 import { GqlOptionsFactory } from '@nestjs/graphql';
+import { Request } from 'express';
 import { join } from 'path';
+import { AuthService } from 'src/Auth/auth.service';
 import { User } from 'src/user/models/user.model';
 
 @Injectable()
 export class GqlConfigService implements GqlOptionsFactory {
-  constructor() {}
+  private authService: AuthService;
+  constructor(private moduleRef: ModuleRef) {}
+  async onModuleInit() {
+    // Inject AuthService with this approach because AuthService does not exist at this time
+    this.authService = await this.moduleRef.create(AuthService);
+  }
   createGqlOptions() {
     return {
       playground: true,
@@ -17,7 +25,16 @@ export class GqlConfigService implements GqlOptionsFactory {
       context: async ({ req, connection }) => {
         let currentUser: User;
         if (connection && connection.context) currentUser = connection.context.currentUser;
-        return { req, currentUser };
+        else currentUser = await this.authService.getUserFromReqHeaders(<Request>req);
+
+        let locale = this.authService.getLocale(req);
+
+        return {
+          req,
+          currentUser,
+          lang: locale.lang,
+          country: locale.country
+        };
       }
     };
   }

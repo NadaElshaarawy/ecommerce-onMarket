@@ -3,9 +3,7 @@ import { UserResolver } from './resolvers/user.resolver';
 
 @Module({
   imports: [],
-  providers: [
-    UserResolver
-  ],
+  providers: [UserResolver],
   exports: []
 })
 export class UserModule {}

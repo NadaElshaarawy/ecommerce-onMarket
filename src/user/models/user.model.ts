@@ -21,7 +21,7 @@ import { GenderEnum, LangEnum } from '../user.type';
   tableName: 'Users',
   indexes: [{ fields: [{ name: 'isBlocked' }] }]
 })
-@ObjectType('User')
+@ObjectType()
 export class User extends Model<User> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
@@ -85,7 +85,6 @@ export class User extends Model<User> {
   @Field()
   country: string;
 
-
   @AllowNull(true)
   @Column({ type: DataType.TEXT })
   @Field({ nullable: true })
@@ -116,5 +115,4 @@ export class User extends Model<User> {
   @UpdatedAt
   @Column({ type: DataType.DATE })
   updatedAt: Date;
-
 }

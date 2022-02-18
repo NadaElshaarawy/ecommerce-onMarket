@@ -14,4 +14,8 @@ export class HelperService {
       })[0]
     }`.toLowerCase();
   }
+
+  async hashPassword(password: string): Promise<string> {
+    return await bcrypt.hash(password, 12);
+  }
 }

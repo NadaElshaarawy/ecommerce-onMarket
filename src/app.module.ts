@@ -7,14 +7,17 @@ import { UserModule } from './user/user.module';
 import { GqlConfigService } from './_common/graphql/graphql-provider';
 import { AuthModule } from './Auth/auth.module';
 import { Timestamp } from './_common/graphql/timestamp.scalar';
-import { HelperModule } from './utils/helper.module';
+import { HelperModule } from './_common/utils/helper.module';
+import { AuthService } from './Auth/auth.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     ScheduleModule.forRoot(),
     GraphQLModule.forRootAsync({
-      useClass: GqlConfigService
+      imports: [AuthModule],
+      useClass: GqlConfigService,
+      inject: [AuthService]
     }),
     DatabaseModule,
     UserModule,

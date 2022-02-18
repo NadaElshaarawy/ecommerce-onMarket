@@ -2,6 +2,48 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  fullName: String!
+  slug: String!
+  email: String
+  verifiedPhone: String
+  gender: GenderEnum!
+  country: String!
+  profilePicture: String
+  isBlocked: Boolean!
+  favLang: LangEnum!
+  token: String
+}
+
+enum GenderEnum {
+  MALE
+  FEMALE
+}
+
+enum LangEnum {
+  EN
+  AR
+}
+
 type Query {
-  me: Boolean!
+  me: Timestamp!
+}
+
+scalar Timestamp
+
+type Mutation {
+  signUp(input: SignUpInput!): User!
+}
+
+input SignUpInput {
+  firstName: String!
+  lastName: String!
+  birthDate: Timestamp!
+  email: String
+  phone: String!
+  password: String!
+  country: String!
 }
