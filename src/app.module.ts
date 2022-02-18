@@ -9,6 +9,7 @@ import { AuthModule } from './Auth/auth.module';
 import { Timestamp } from './_common/graphql/timestamp.scalar';
 import { HelperModule } from './_common/utils/helper.module';
 import { AuthService } from './Auth/auth.service';
+import { ItemModule } from './item/item.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { AuthService } from './Auth/auth.service';
     DatabaseModule,
     UserModule,
     AuthModule,
-    HelperModule
+    HelperModule,
+    ItemModule
   ],
   providers: [Timestamp]
 })
