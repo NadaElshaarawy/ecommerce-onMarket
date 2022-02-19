@@ -10,6 +10,7 @@ import {
   Table,
   UpdatedAt
 } from 'sequelize-typescript';
+import { paginate } from 'src/_common/paginator/paginator.service';
 
 @Table({
   timestamps: true,
@@ -29,10 +30,10 @@ export class Item extends Model<Item> {
   @Field()
   name: string;
 
-  @AllowNull(false)
+  @AllowNull(true)
   @Column
-  @Field()
-  description: string;
+  @Field({ nullable: true })
+  description?: string;
 
   @AllowNull(false)
   @Column({ type: DataType.DOUBLE })
@@ -57,4 +58,8 @@ export class Item extends Model<Item> {
   @UpdatedAt
   @Column({ type: DataType.DATE })
   updatedAt: Date;
+
+  static async paginate(filter = {}, sort = '-createdAt', page = 0, limit = 15, include: any = []) {
+    return paginate<Item>(this, filter, sort, page, limit, include);
+  }
 }

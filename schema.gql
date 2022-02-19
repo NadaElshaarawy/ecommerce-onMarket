@@ -42,16 +42,59 @@ enum LangEnum {
   AR
 }
 
+type Item {
+  id: ID!
+  name: String!
+  description: String
+  price: Float!
+  images: [String]
+  isActive: Boolean!
+}
+
+type PageInfo {
+  totalCount: Int!
+  totalPages: Int!
+  page: Int!
+  limit: Int!
+  hasNext: Boolean!
+}
+
+type GqlItemsPagination {
+  items: [Item]
+  pageInfo: PageInfo!
+}
+
 type Query {
+  itemBoard(itemId: String!): Item!
+  singleItemForCustomer(itemId: String!): Item!
+  itemsBoard(paginate: PaginatorInput, filter: ItemFilterBoard!): GqlItemsPagination!
+  items(paginate: PaginatorInput, filter: ItemsFilter!): GqlItemsPagination!
   securityGroups: [SecurityGroup!]!
   securityGroup(securityGroupId: String!): SecurityGroup!
   getAllPermissions: [SecurityGroup!]!
+}
+
+input PaginatorInput {
+  page: Float = 1
+  limit: Float = 15
+}
+
+input ItemFilterBoard {
+  searchKey: String
+  isActive: Boolean
+}
+
+input ItemsFilter {
+  searchKey: String
 }
 
 type Mutation {
   seedAdmin: Boolean!
   signup(input: SignUpInput!): User!
   login(input: LoginInput!): User!
+  createItemBoard(input: CreateItemInput!): Item!
+  updateItemBoard(input: UpdateItemInput!): Item!
+  deleteItemBoard(itemId: String!): Boolean!
   createSecurityGroup(input: CreateSecurityGroupInput!): SecurityGroup!
 }
 
@@ -68,6 +111,22 @@ input SignUpInput {
 input LoginInput {
   phone: String!
   password: String!
+}
+
+input CreateItemInput {
+  name: String!
+  description: String
+  price: Float!
+  images: [String]
+}
+
+input UpdateItemInput {
+  itemId: ID!
+  name: String
+  description: String
+  price: Float
+  isActive: Boolean
+  images: [String]
 }
 
 input CreateSecurityGroupInput {

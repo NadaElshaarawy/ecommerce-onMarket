@@ -14,9 +14,17 @@ export enum SecurityGroupPermissionsEnum {
   UN_ASSIGN_SECURITY_GROUPS_TO_USERS = 'UN_ASSIGN_SECURITY_GROUPS_TO_USERS'
 }
 
+export enum ItemPermissionsEnum {
+  READ_ITEMS = 'READ_ITEMS',
+  UPDATE_ITEMS = 'UPDATE_ITEMS',
+  CREATE_ITEMS = 'CREATE_ITEMS',
+  DELETE_ITEMS = 'DELETE_ITEMS'
+}
+
 export const permissions = {
   users: Object.keys(UserPermissionsEnum),
-  securityGroups: Object.keys(SecurityGroupPermissionsEnum)
+  securityGroups: Object.keys(SecurityGroupPermissionsEnum),
+  items: Object.keys(ItemPermissionsEnum)
 };
 
 export function getAllPermissions(): string[] {
