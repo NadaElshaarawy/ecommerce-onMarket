@@ -7,5 +7,6 @@ export const enErrorMessage: IErrorMessage = {
   PHONE_ALREADY_EXISTS: 'PHONE already exists',
   INVALID_CREDENTIALS: 'Invalid credentials',
   BLOCKED_USER: 'Blocked user',
-  USER_DOES_NOT_EXIST: 'User does not exist'
+  USER_DOES_NOT_EXIST: 'User does not exist',
+  ITEM_NOT_EXIST: 'Item not exist'
 };

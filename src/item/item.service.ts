@@ -1,6 +1,8 @@
 import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { CONTEXT } from '@nestjs/graphql';
 import { Op } from 'sequelize';
+import { BaseHttpException } from 'src/_common/exceptions/base-http-exception';
+import { ErrorCodeEnum } from 'src/_common/exceptions/error-code.enum';
 import { GqlContext } from 'src/_common/graphql/graphql-context.type';
 import { PaginatorInput } from 'src/_common/paginator/paginator.input';
 import { PaginationRes } from 'src/_common/paginator/paginator.types';
@@ -13,8 +15,6 @@ import { Item } from './item.model';
 
 @Injectable()
 export class ItemService {
-  constructor(@Inject(CONTEXT) private readonly context: GqlContext) {}
-
   async createItemBoard(input: CreateItemInput): Promise<Item> {
     return await Item.create(input);
   }
@@ -32,13 +32,13 @@ export class ItemService {
 
   async itemOrError(itemId: string): Promise<Item> {
     const item = await Item.findOne({ where: { id: itemId } });
-    if (!item) throw new HttpException('Item not exist', 617);
+    if (!item) throw new BaseHttpException(ErrorCodeEnum.ITEM_NOT_EXIST);
     return item;
   }
 
   async singleItemForCustomer(itemId: string): Promise<Item> {
     const item = await this.itemOrError(itemId);
-    if (!item.isActive) throw new HttpException('Item not exist', 617);
+    if (!item.isActive) throw new BaseHttpException(ErrorCodeEnum.ITEM_NOT_EXIST);
     return item;
   }
 
