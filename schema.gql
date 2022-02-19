@@ -2,6 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type SecurityGroup {
+  id: ID!
+  groupName: String!
+  description: String
+  permissions: [String!]!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+}
+
+scalar Timestamp
+
 type User {
   id: ID!
   firstName: String!
@@ -15,7 +26,10 @@ type User {
   profilePicture: String
   isBlocked: Boolean!
   favLang: LangEnum!
+  securityGroup: SecurityGroup
   token: String
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
 }
 
 enum GenderEnum {
@@ -30,13 +44,15 @@ enum LangEnum {
 
 type Query {
   me: Timestamp!
+  securityGroups: [SecurityGroup!]!
+  securityGroup(securityGroupId: String!): SecurityGroup!
+  getAllPermissions: [SecurityGroup!]!
 }
-
-scalar Timestamp
 
 type Mutation {
   signup(input: SignUpInput!): User!
   login(input: LoginInput!): User!
+  createSecurityGroup(input: CreateSecurityGroupInput!): SecurityGroup!
 }
 
 input SignUpInput {
@@ -52,4 +68,10 @@ input SignUpInput {
 input LoginInput {
   phone: String!
   password: String!
+}
+
+input CreateSecurityGroupInput {
+  groupName: String!
+  description: String
+  permissions: [String!]!
 }

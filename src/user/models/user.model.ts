@@ -9,12 +9,15 @@ import {
   Unique,
   CreatedAt,
   UpdatedAt,
-  HasMany
+  HasMany,
+  ForeignKey,
+  BelongsTo
 } from 'sequelize-typescript';
 import { ID, Field, ObjectType } from '@nestjs/graphql';
 import { UserVerificationCode } from './user-verification-code.model';
 import { GenderEnum, LangEnum } from '../user.type';
 import { paginate } from 'src/_common/paginator/paginator.service';
+import { SecurityGroup } from 'src/security-group/security-group.model';
 
 @Table({
   timestamps: true,
@@ -102,6 +105,15 @@ export class User extends Model<User> {
   @Column({ type: DataType.ENUM('EN', 'AR') })
   @Field(() => LangEnum)
   favLang: LangEnum;
+
+  @AllowNull(true)
+  @ForeignKey(() => SecurityGroup)
+  @Column({ type: DataType.UUID, onDelete: 'SET NULL', onUpdate: 'SET NULL' })
+  securityGroupId?: string;
+
+  @BelongsTo(() => SecurityGroup)
+  @Field(() => SecurityGroup, { nullable: true })
+  securityGroup?: SecurityGroup;
 
   @HasMany(() => UserVerificationCode)
   userVerificationCodes?: UserVerificationCode[];

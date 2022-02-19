@@ -1,4 +1,4 @@
-import { Query, Resolver } from '@nestjs/graphql';
+import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Timestamp } from 'src/_common/graphql/timestamp.scalar';
 import { User } from '../models/user.model';
 
@@ -17,4 +17,14 @@ export class UserResolver {
   //** --------------------- MUTATIONS --------------------- */
 
   //** ------------------ RESOLVE FIELDS ------------------ */
+
+  @ResolveField(type => Timestamp)
+  createdAt(@Parent() securityGroup) {
+    return new Date(securityGroup.createdAt).valueOf();
+  }
+
+  @ResolveField(type => Timestamp)
+  updatedAt(@Parent() securityGroup) {
+    return new Date(securityGroup.updatedAt).valueOf();
+  }
 }
