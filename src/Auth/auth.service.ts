@@ -12,6 +12,8 @@ import { LoginInput } from './inputs/login.input';
 import { WhereOptions } from 'sequelize';
 import * as bcrypt from 'bcryptjs';
 import { SecurityGroup } from 'src/security-group/security-group.model';
+import { BaseHttpException } from 'src/_common/exceptions/base-http-exception';
+import { ErrorCodeEnum } from 'src/_common/exceptions/error-code.enum';
 
 @Injectable()
 export class AuthService {
@@ -46,8 +48,8 @@ export class AuthService {
   }
 
   private async errorIfUserWithVerifiedPhoneExists(phone: string) {
-    if (await User.findOne({ where: { verifiedPhone: phone } }))
-      throw new HttpException('phone already exists', 610);
+    const user = await User.findOne({ where: { verifiedPhone: phone } });
+    if (user) throw new BaseHttpException(ErrorCodeEnum.PHONE_ALREADY_EXISTS);
   }
 
   private async deleteDuplicatedUsersAtNotVerifiedPhone(duplicatedPhone: string) {

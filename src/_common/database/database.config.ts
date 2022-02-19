@@ -13,7 +13,8 @@ export const config = (configService: ConfigService) => {
     host: configService.get('DB_HOST'),
     port: configService.get('DB_PORT'),
     dialect: 'postgres',
-    logging: sql => console.log(`✔✔✔✔ ${new Date()}: ${sql}\n\n`),
+    logging: sql => false,
+    // sql => console.log(`✔✔✔✔ ${new Date()}: ${sql}\n\n`),
     pool: {
       acquire: 30000,
       idle: 10000
