@@ -1,21 +1,19 @@
-import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Timestamp } from 'src/_common/graphql/timestamp.scalar';
 import { User } from '../models/user.model';
+import { UserService } from '../user.service';
 
 @Resolver(() => User)
 export class UserResolver {
-  constructor() {}
+  constructor(private readonly userService: UserService) {}
 
   //** --------------------- QUERIES --------------------- */
-  @Query(returns => Timestamp)
-  async me() {
-    const users = await User.paginate();
-    console.log(users);
 
-    return new Date().getTime();
-  }
   //** --------------------- MUTATIONS --------------------- */
-
+  @Mutation(returns => Boolean)
+  async seedAdmin() {
+    return await this.userService.seedAdmin();
+  }
   //** ------------------ RESOLVE FIELDS ------------------ */
 
   @ResolveField(type => Timestamp)
