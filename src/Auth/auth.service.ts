@@ -8,6 +8,9 @@ import { AuthTransformer } from './auth.transformer';
 import { SignUpInput } from './inputs/sign-up.input';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
+import { LoginInput } from './inputs/login.input';
+import { WhereOptions } from 'sequelize';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -76,7 +79,27 @@ export class AuthService {
     await this.deleteDuplicatedUsersAtEmailsIfPhoneNotVerifiedYet(input.email);
     await this.errorIfUserWithEmailExists(input.email);
     const transformedInput = await this.authTransformer.signUpInputTransformer(input);
-    const user = await User.create({ ...transformedInput });
+    // TODO : don't save on verified phone after make phone verification
+    const user = await User.create({ ...transformedInput, verifiedPhone: input.phone });
+    return this.appendAuthTokenToUser(user);
+  }
+
+  async getValidUserForLoginOrError(where: WhereOptions): Promise<User> {
+    const user = await User.findOne({ where });
+    if (!user) throw new HttpException('Incorrect phone or password', 612);
+    if (user.isBlocked) throw new HttpException('Blocked user', 613);
+    return user;
+  }
+
+  async matchPassword(password: string, hash: string) {
+    const isMatched = await bcrypt.compare(password, hash);
+    if (!isMatched) throw new HttpException('Incorrect phone or password', 612);
+  }
+
+  async login(input: LoginInput): Promise<User> {
+    const params = { verifiedPhone: input.phone };
+    const user = await this.getValidUserForLoginOrError(params);
+    await this.matchPassword(input.password, user.password);
     return this.appendAuthTokenToUser(user);
   }
 }

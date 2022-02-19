@@ -14,6 +14,7 @@ import {
 import { ID, Field, ObjectType } from '@nestjs/graphql';
 import { UserVerificationCode } from './user-verification-code.model';
 import { GenderEnum, LangEnum } from '../user.type';
+import { paginate } from 'src/_common/paginator/paginator.service';
 
 @Table({
   timestamps: true,
@@ -115,4 +116,8 @@ export class User extends Model<User> {
   @UpdatedAt
   @Column({ type: DataType.DATE })
   updatedAt: Date;
+
+  static async paginate(filter = {}, sort = '-createdAt', page = 0, limit = 15, include: any = []) {
+    return paginate<User>(this, filter, sort, page, limit, include);
+  }
 }
