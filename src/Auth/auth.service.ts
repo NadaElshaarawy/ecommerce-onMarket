@@ -11,6 +11,7 @@ import { ConfigService } from '@nestjs/config';
 import { LoginInput } from './inputs/login.input';
 import { WhereOptions } from 'sequelize';
 import * as bcrypt from 'bcryptjs';
+import { SecurityGroup } from 'src/security-group/security-group.model';
 
 @Injectable()
 export class AuthService {
@@ -40,7 +41,7 @@ export class AuthService {
     let token = this.getAuthToken(req);
     if (!token) return null;
     let { userId } = <TokenPayload>jwt.verify(token, this.config.get('JWT_SECRET'));
-    const user = await User.findOne({ where: { id: userId } });
+    const user = await User.findOne({ where: { id: userId }, include: [SecurityGroup] });
     return user;
   }
 

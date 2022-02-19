@@ -1,10 +1,11 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { AuthGuard } from 'src/Auth/auth.guard';
+import { HasPermission } from 'src/Auth/auth.metadata';
 import { Timestamp } from 'src/_common/graphql/timestamp.scalar';
 import { CreateSecurityGroupInput } from './inputs/create-security-group.input';
 import { SecurityGroupInput } from './inputs/security-group.input';
-import { getAllPermissions } from './security-group-permissions';
+import { getAllPermissions, SecurityGroupPermissionsEnum } from './security-group-permissions';
 import { SecurityGroup } from './security-group.model';
 import { SecurityGroupService } from './security-group.service';
 @UseGuards(AuthGuard)
@@ -30,7 +31,7 @@ export class SecurityGroupResolver {
   }
 
   //** --------------------- MUTATIONS --------------------- */
-
+  @HasPermission(SecurityGroupPermissionsEnum.CREATE_SECURITY_GROUPS)
   @Mutation(returns => SecurityGroup)
   async createSecurityGroup(@Args('input') input: CreateSecurityGroupInput) {
     return await this.securityGroupService.createSecurityGroup(input);
