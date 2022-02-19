@@ -29,8 +29,8 @@ export class AuthService {
   }
 
   getAuthToken(req: Request): string {
-    if (req?.headers?.Authorization) {
-      let auth: string = <string>req.headers.Authorization;
+    if (req?.headers?.authorization) {
+      let auth: string = <string>req.headers.authorization;
       return auth.split(' ')[1];
     }
     return null;

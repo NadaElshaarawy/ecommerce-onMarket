@@ -1,11 +1,13 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { AuthGuard } from 'src/Auth/auth.guard';
 import { Timestamp } from 'src/_common/graphql/timestamp.scalar';
 import { CreateSecurityGroupInput } from './inputs/create-security-group.input';
 import { SecurityGroupInput } from './inputs/security-group.input';
 import { getAllPermissions } from './security-group-permissions';
 import { SecurityGroup } from './security-group.model';
 import { SecurityGroupService } from './security-group.service';
-
+@UseGuards(AuthGuard)
 @Resolver(of => SecurityGroup)
 export class SecurityGroupResolver {
   constructor(private readonly securityGroupService: SecurityGroupService) {}
