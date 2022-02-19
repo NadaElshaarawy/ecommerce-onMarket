@@ -64,11 +64,24 @@ type GqlItemsPagination {
   pageInfo: PageInfo!
 }
 
+type GqlUsersPagination {
+  items: [User]
+  pageInfo: PageInfo!
+}
+
+type GqlUsersPaginatedResponse {
+  data: GqlUsersPagination
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
 type Query {
   itemBoard(itemId: String!): Item!
   singleItemForCustomer(itemId: String!): Item!
   itemsBoard(paginate: PaginatorInput, filter: ItemFilterBoard!): GqlItemsPagination!
   items(paginate: PaginatorInput, filter: ItemsFilter!): GqlItemsPagination!
+  test: GqlUsersPaginatedResponse!
   securityGroups: [SecurityGroup!]!
   securityGroup(securityGroupId: String!): SecurityGroup!
   getAllPermissions: [SecurityGroup!]!

@@ -1,16 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { WhereOptions, Includeable } from 'sequelize/types';
-import { Literal } from 'sequelize/types/lib/utils';
-
 export interface PaginationRes<T> {
   items: T[];
-  pageInfo: {
-    page: number;
-    hasNext: boolean;
-    limit: number;
-    totalCount: number;
-    totalPages: number;
-  };
+  pageInfo: PageInfo;
 }
 
 @ObjectType()
@@ -29,12 +20,4 @@ export abstract class PageInfo {
 
   @Field(type => Boolean)
   hasNext: boolean;
-}
-
-export interface IPaginatedFilter {
-  where?: WhereOptions;
-  sort?: string | Literal;
-  page?: number;
-  limit?: number;
-  include?: Includeable[];
 }

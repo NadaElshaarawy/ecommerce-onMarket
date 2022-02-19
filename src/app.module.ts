@@ -11,8 +11,9 @@ import { HelperModule } from './_common/utils/helper.module';
 import { AuthService } from './Auth/auth.service';
 import { ItemModule } from './item/item.module';
 import { SecurityGroupModule } from './security-group/security-group.module';
-import { APP_FILTER, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { HttpExceptionFilter } from './_common/exceptions/exception-filter';
+import { GqlResponseInterceptor } from './_common/graphql/graphql-response.interceptor';
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { HttpExceptionFilter } from './_common/exceptions/exception-filter';
     Timestamp,
 
     { provide: APP_PIPE, useClass: ValidationPipe },
-    { provide: APP_FILTER, useClass: HttpExceptionFilter }
+    { provide: APP_FILTER, useClass: HttpExceptionFilter },
+    { provide: APP_INTERCEPTOR, useClass: GqlResponseInterceptor }
   ]
 })
 export class AppModule {}

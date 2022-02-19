@@ -3,6 +3,8 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthGuard } from 'src/Auth/auth.guard';
 import { HasPermission } from 'src/Auth/auth.metadata';
 import { ItemPermissionsEnum } from 'src/security-group/security-group-permissions';
+import { User } from 'src/user/models/user.model';
+import { generateGqlResponseType } from 'src/_common/graphql/graphql-response';
 import { NullablePaginatorInput } from 'src/_common/paginator/paginator.input';
 import { CreateItemInput } from './inputs/create-item.input';
 import { DeleteItemInput } from './inputs/delete-item.input';
@@ -13,6 +15,8 @@ import { UpdateItemInput } from './inputs/update-item.input';
 import { Item } from './item.model';
 import { itemsPaginationResponse } from './item.response';
 import { ItemService } from './item.service';
+
+export let x = generateGqlResponseType(Array(User));
 
 @Resolver(() => Item)
 export class ItemResolver {
@@ -68,5 +72,10 @@ export class ItemResolver {
   @Query(returns => itemsPaginationResponse)
   async items(@Args('filter') filter: ItemsFilter, @Args() paginate: NullablePaginatorInput) {
     return await this.itemService.items(filter, paginate.paginate);
+  }
+  @Query(returns => x)
+  async test() {
+    const n = await User.paginate();
+    return n;
   }
 }
