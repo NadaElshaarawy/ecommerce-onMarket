@@ -21,7 +21,7 @@ export function generateGqlResponseType<T, K>(
     if (Array.isArray(TClass)) {
       return {
         type: generateGqlPaginationResponseType<T>(TClass),
-        name: `${TClass[0].name}sPaginated`
+        name: `${TClass[0].name}s`
       };
     }
     return { type: TClass, name: TClass.name };

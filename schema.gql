@@ -59,29 +59,37 @@ type PageInfo {
   hasNext: Boolean!
 }
 
+type GqlBooleanResponse {
+  data: Boolean
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
 type GqlItemsPagination {
   items: [Item]
   pageInfo: PageInfo!
 }
 
-type GqlUsersPagination {
-  items: [User]
-  pageInfo: PageInfo!
+type GqlItemsResponse {
+  data: GqlItemsPagination
+  code: Int!
+  success: Boolean!
+  message: String
 }
 
-type GqlUsersPaginatedResponse {
-  data: GqlUsersPagination
+type GqlItemResponse {
+  data: Item
   code: Int!
   success: Boolean!
   message: String
 }
 
 type Query {
-  itemBoard(itemId: String!): Item!
-  singleItemForCustomer(itemId: String!): Item!
-  itemsBoard(paginate: PaginatorInput, filter: ItemFilterBoard!): GqlItemsPagination!
-  items(paginate: PaginatorInput, filter: ItemsFilter!): GqlItemsPagination!
-  test: GqlUsersPaginatedResponse!
+  itemBoard(itemId: String!): GqlItemResponse!
+  singleItemForCustomer(itemId: String!): GqlItemResponse!
+  itemsBoard(paginate: PaginatorInput, filter: ItemFilterBoard!): GqlItemsResponse!
+  items(paginate: PaginatorInput, filter: ItemsFilter!): GqlItemsResponse!
   securityGroups: [SecurityGroup!]!
   securityGroup(securityGroupId: String!): SecurityGroup!
   getAllPermissions: [SecurityGroup!]!
@@ -105,9 +113,9 @@ type Mutation {
   seedAdmin: Boolean!
   signup(input: SignUpInput!): User!
   login(input: LoginInput!): User!
-  createItemBoard(input: CreateItemInput!): Item!
-  updateItemBoard(input: UpdateItemInput!): Item!
-  deleteItemBoard(itemId: String!): Boolean!
+  createItemBoard(input: CreateItemInput!): GqlItemResponse!
+  updateItemBoard(input: UpdateItemInput!): GqlItemResponse!
+  deleteItemBoard(itemId: String!): GqlBooleanResponse!
   createSecurityGroup(input: CreateSecurityGroupInput!): SecurityGroup!
 }
 
