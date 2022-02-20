@@ -14,12 +14,12 @@ import {
 } from 'sequelize-typescript';
 import { User } from 'src/user/models/user.model';
 import { paginate } from 'src/_common/paginator/paginator.service';
-import { OrderStatusEnum } from './order.type';
+import { OrderStatusEnum } from '../order.type';
 
 @Table({
   timestamps: true,
   paranoid: true,
-  tableName: 'Items'
+  tableName: 'Orders'
 })
 @ObjectType()
 export class Order extends Model<Order> {

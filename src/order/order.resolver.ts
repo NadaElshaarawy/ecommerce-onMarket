@@ -1,5 +1,5 @@
 import { Resolver } from '@nestjs/graphql';
-import { Order } from './order.model';
+import { Order } from './models/order.model';
 import { OrderService } from './order.service';
 
 @Resolver(() => Order)
