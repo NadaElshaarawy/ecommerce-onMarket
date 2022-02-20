@@ -1,16 +1,20 @@
 import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
 import {
   AllowNull,
+  BelongsTo,
   Column,
   CreatedAt,
   DataType,
   Default,
+  ForeignKey,
   Model,
   PrimaryKey,
   Table,
   UpdatedAt
 } from 'sequelize-typescript';
+import { User } from 'src/user/models/user.model';
 import { paginate } from 'src/_common/paginator/paginator.service';
+import { OrderStatusEnum } from './order.type';
 
 @Table({
   timestamps: true,
@@ -24,6 +28,27 @@ export class Order extends Model<Order> {
   @Column({ type: DataType.UUID })
   @Field(() => ID)
   id: string;
+
+  @ForeignKey(() => User)
+  @AllowNull(false)
+  @Column({ onDelete: 'CASCADE', onUpdate: 'CASCADE', type: DataType.UUID })
+  userId: string;
+
+  @BelongsTo(() => User)
+  user: User;
+
+  @AllowNull(false)
+  @Column({ type: DataType.DOUBLE })
+  @Field(type => Float)
+  totalAmount: number;
+
+  @Default(OrderStatusEnum.NEW)
+  @AllowNull(false)
+  @Column({
+    type: DataType.ENUM(OrderStatusEnum.NEW, OrderStatusEnum.COMPLETED, OrderStatusEnum.CANCELED)
+  })
+  @Field(() => OrderStatusEnum)
+  orderStatus: OrderStatusEnum;
 
   @CreatedAt
   @Column({ type: DataType.DATE })
