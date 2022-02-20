@@ -12,9 +12,10 @@ module.exports = {
   collectCoverage: false,
   verbose: true,
   moduleNameMapper: {
+    './src/index-minimal': '<rootDir>/node_modules/@apollo/protobufjs/src/index-minimal',
     'src/(.*)': '<rootDir>/src/$1'
   },
-  // setupFilesAfterEnv: [''],
+  setupFilesAfterEnv: [],
   displayName: {
     name: 'ONMARKET',
     color: 'blue'

@@ -11,7 +11,7 @@ export class CreateItemInput {
   @IsOptional()
   @IsString()
   @Field({ nullable: true })
-  description: string;
+  description?: string;
 
   @IsNotEmpty()
   @Field(type => Float)

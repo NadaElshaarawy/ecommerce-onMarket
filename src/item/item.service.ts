@@ -19,7 +19,7 @@ export class ItemService {
 
   async updateItemBoard(input: UpdateItemInput): Promise<Item> {
     const item = await this.itemOrError(input.itemId);
-    return await item.update({ input });
+    return await item.update(input);
   }
 
   async deleteItemBoard(input: DeleteItemInput): Promise<Boolean> {
