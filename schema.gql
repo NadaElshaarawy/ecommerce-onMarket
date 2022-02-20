@@ -55,6 +55,7 @@ type Order {
   id: ID!
   totalAmount: Float!
   orderStatus: OrderStatusEnum!
+  orderLines: [OrderLine]
 }
 
 enum OrderStatusEnum {
@@ -132,6 +133,12 @@ type GqlSecurityGroupResponse {
   code: Int!
   success: Boolean!
   message: String
+}
+
+type OrderLine {
+  id: ID!
+  price: Float!
+  quantity: Int!
 }
 
 type GqlOrdersPagination {

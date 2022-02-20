@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { AuthGuard } from 'src/Auth/auth.guard';
 import { HasPermission } from 'src/Auth/auth.metadata';
 import { OrderPermissionsEnum } from 'src/security-group/security-group-permissions';
@@ -7,13 +7,18 @@ import { PaginatorInput } from 'src/_common/paginator/paginator.input';
 import { OrdersFilterBoard } from './inputs/order-filter-board.input';
 import { OrdersFilter } from './inputs/order-filter.input';
 import { OrderInput } from './inputs/order.input';
+import { OrderLine } from './models/order-line.model';
 import { Order } from './models/order.model';
+import { OrderDataloader } from './order.dataloader';
 import { gqlOrderResponse, gqlOrdersPaginationResponse } from './order.response';
 import { OrderService } from './order.service';
 
 @Resolver(() => Order)
 export class OrderResolver {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(
+    private readonly orderService: OrderService,
+    private readonly orderDataloader: OrderDataloader
+  ) {}
 
   //** --------------------- MUTATIONS --------------------- */
   @UseGuards(AuthGuard)
@@ -56,5 +61,11 @@ export class OrderResolver {
   @Query(returns => gqlOrderResponse)
   async myOrder(@Args() input: OrderInput) {
     return await this.orderService.myOrder(input.orderId);
+  }
+
+  //** ------------------- DATALOADER ------------------- */
+  @ResolveField(type => [OrderLine], { nullable: 'itemsAndList' })
+  orderLines(order: Order) {
+    return this.orderDataloader.orderLinesLoader.load(order.id);
   }
 }
