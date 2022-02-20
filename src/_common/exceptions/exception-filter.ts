@@ -16,7 +16,6 @@ export class HttpExceptionFilter implements GqlExceptionFilter {
   constructor() {}
 
   catch(exception: unknown, host: ArgumentsHost) {
-    console.log('message');
     if (exception instanceof HttpException) {
       const gqlHost = GqlArgumentsHost.create(host);
       const currentGqlInfo = gqlHost.getInfo();
@@ -27,9 +26,10 @@ export class HttpExceptionFilter implements GqlExceptionFilter {
       console.log('------------------------------');
 
       let params = myException.getParams;
-      const messageKey = exception.getStatus().toString();
+      const messageKey = exception.getResponse().toString();
 
       let localizedMessage = new MessageSource().getMessage(messageKey, currentGqlCtx.lang, params);
+
       if (!localizedMessage) localizedMessage = exception.getResponse().toString();
 
       console.log(
@@ -38,8 +38,6 @@ export class HttpExceptionFilter implements GqlExceptionFilter {
         }`
       );
       let message = exception.getResponse() as any;
-      console.log(message);
-
       const trace = `Operation body: ${
         currentGqlCtx.req ? JSON.stringify(currentGqlCtx.req.body) : 'None'
       }
@@ -48,12 +46,10 @@ export class HttpExceptionFilter implements GqlExceptionFilter {
         console.log(`Message: ${message.error}`, `\n\n\n\n\n\n Stack: ${trace}`, '\n\n\n\n\n\n');
         message = `${message.error} - ${JSON.stringify(message.message)}`;
       } else {
-        console.log('here');
         console.log(`Message: ${message}`, `\n\n\n\n\n\n Stack: ${trace}`, '\n\n\n\n\n\n');
       }
       this.response.code = exception.getStatus();
       this.response.message = localizedMessage;
-      console.log(this.response, 'resssssssssss');
 
       return this.response;
     }
