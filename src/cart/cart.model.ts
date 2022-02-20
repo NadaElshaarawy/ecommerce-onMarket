@@ -43,7 +43,7 @@ export class CartItem extends Model<CartItem> {
   itemId: string;
 
   @BelongsTo(() => Item)
-  item: User;
+  item: Item;
 
   @AllowNull(false)
   @Column({ type: DataType.INTEGER })

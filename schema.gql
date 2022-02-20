@@ -51,6 +51,18 @@ type Item {
   isActive: Boolean!
 }
 
+type Order {
+  id: ID!
+  totalAmount: Float!
+  orderStatus: OrderStatusEnum!
+}
+
+enum OrderStatusEnum {
+  NEW
+  COMPLETED
+  CANCELED
+}
+
 type CartItem {
   id: ID!
   quantity: Int!
@@ -122,6 +134,18 @@ type GqlSecurityGroupResponse {
   message: String
 }
 
+type GqlOrdersPagination {
+  items: [Order]
+  pageInfo: PageInfo!
+}
+
+type GqlOrderResponse {
+  data: Order
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
 type GqlCartItemsPagination {
   items: [CartItem]
   pageInfo: PageInfo!
@@ -174,6 +198,7 @@ type Mutation {
   updateItemBoard(input: UpdateItemInput!): GqlItemResponse!
   deleteItemBoard(itemId: String!): GqlBooleanResponse!
   createSecurityGroup(input: CreateSecurityGroupInput!): GqlSecurityGroupResponse!
+  submitOrder: GqlOrderResponse!
   addToCart(input: AddToCartInput!): GqlCartItemResponse!
   updateCartItem(input: UpdateCartItemInput!): GqlCartItemResponse!
   deleteCartItem(cartItemId: String!): GqlBooleanResponse!
