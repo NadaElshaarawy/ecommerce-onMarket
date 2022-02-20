@@ -5,6 +5,7 @@ import { AppModule } from 'src/app.module';
 import { UserService } from 'src/user/user.service';
 import { BaseHttpException } from 'src/_common/exceptions/base-http-exception';
 import { CreateItemInput } from '../inputs/create-item.input';
+import { DeleteItemInput } from '../inputs/delete-item.input';
 import { UpdateItemInput } from '../inputs/update-item.input';
 import { Item } from '../item.model';
 import { ItemService } from '../item.service';
@@ -37,7 +38,7 @@ describe('ItemService', () => {
         await new ItemService().updateItemBoard(input);
       } catch (e) {
         expect(e).toBeInstanceOf(BaseHttpException);
-        expect(e.messageKey).toBe(607);
+        expect(e.getStatus()).toBe(607);
       }
     });
 
@@ -58,6 +59,40 @@ describe('ItemService', () => {
         expect(res.id).toBe('1');
         expect(res.price).toBe(100);
         expect(Item.findOne).toBeCalledTimes(1);
+      } catch (e) {
+        expect(e).toBeNull();
+      }
+    });
+  });
+
+  describe('deleteItemBoard', () => {
+    it('throw exception if item not exist', async () => {
+      const input: DeleteItemInput = { itemId: '1' };
+      let notFoundItem = jest.fn().mockReturnValue(Promise.resolve(null));
+      jest.spyOn(Item, 'findOne').mockImplementation(notFoundItem);
+      try {
+        await new ItemService().deleteItemBoard(input);
+      } catch (e) {
+        expect(e).toBeInstanceOf(BaseHttpException);
+        expect(e.getStatus()).toBe(607);
+      }
+    });
+
+    it('delete item', async () => {
+      const input: DeleteItemInput = { itemId: '1' };
+
+      const item = { id: '1', name: 'name', price: 100 };
+      let ItemBeforeUpdate = jest.fn().mockReturnValue(Promise.resolve(item));
+      jest.spyOn(Item, 'findOne').mockImplementation(ItemBeforeUpdate);
+
+      let itemDestroyResponse = jest.fn().mockReturnValue(Promise.resolve(true));
+      jest.spyOn(Item, 'destroy').mockImplementation(itemDestroyResponse);
+
+      try {
+        const res = await new ItemService().deleteItemBoard(input);
+        expect(res).toBe(true);
+        expect(Item.findOne).toBeCalledTimes(1);
+        expect(Item.destroy).toBeCalledTimes(1);
       } catch (e) {
         expect(e).toBeNull();
       }
