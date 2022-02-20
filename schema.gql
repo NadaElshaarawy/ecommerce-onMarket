@@ -85,14 +85,33 @@ type GqlItemResponse {
   message: String
 }
 
+type GqlSecurityGroupsPagination {
+  items: [SecurityGroup]
+  pageInfo: PageInfo!
+}
+
+type GqlSecurityGroupsResponse {
+  data: [SecurityGroup]
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
+type GqlSecurityGroupResponse {
+  data: SecurityGroup
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
 type Query {
   itemBoard(itemId: String!): GqlItemResponse!
   singleItemForCustomer(itemId: String!): GqlItemResponse!
   itemsBoard(paginate: PaginatorInput, filter: ItemFilterBoard!): GqlItemsResponse!
   items(paginate: PaginatorInput, filter: ItemsFilter!): GqlItemsResponse!
-  securityGroups: [SecurityGroup!]!
-  securityGroup(securityGroupId: String!): SecurityGroup!
-  getAllPermissions: [SecurityGroup!]!
+  securityGroups: GqlSecurityGroupsResponse!
+  securityGroup(securityGroupId: String!): GqlSecurityGroupResponse!
+  getAllPermissions: GqlSecurityGroupsResponse!
 }
 
 input PaginatorInput {
@@ -116,7 +135,7 @@ type Mutation {
   createItemBoard(input: CreateItemInput!): GqlItemResponse!
   updateItemBoard(input: UpdateItemInput!): GqlItemResponse!
   deleteItemBoard(itemId: String!): GqlBooleanResponse!
-  createSecurityGroup(input: CreateSecurityGroupInput!): SecurityGroup!
+  createSecurityGroup(input: CreateSecurityGroupInput!): GqlSecurityGroupResponse!
 }
 
 input SignUpInput {

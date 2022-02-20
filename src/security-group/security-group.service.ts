@@ -22,6 +22,7 @@ export class SecurityGroupService {
 
   async deleteSecurityGroup(input: DeleteSecurityGroupInput) {
     const group = await this.securityGroupOrError(input.securityGroupId);
+    //TODO Add configuration model into db to let the global admin group name dynamic
     if (group.groupName === 'SuperAdmin')
       throw new BaseHttpException(ErrorCodeEnum.CAN_NOT_DELETE_SUPER_ADMIN_GROUP);
     await SecurityGroup.destroy({ where: { id: input.securityGroupId } });
