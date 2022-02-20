@@ -1,9 +1,7 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
-import { CONTEXT } from '@nestjs/graphql';
+import { Injectable } from '@nestjs/common';
 import { Op } from 'sequelize';
 import { BaseHttpException } from 'src/_common/exceptions/base-http-exception';
 import { ErrorCodeEnum } from 'src/_common/exceptions/error-code.enum';
-import { GqlContext } from 'src/_common/graphql/graphql-context.type';
 import { PaginatorInput } from 'src/_common/paginator/paginator.input';
 import { PaginationRes } from 'src/_common/paginator/paginator.types';
 import { CreateItemInput } from './inputs/create-item.input';

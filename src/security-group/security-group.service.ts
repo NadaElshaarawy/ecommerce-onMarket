@@ -1,20 +1,18 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
-import { CONTEXT } from '@nestjs/graphql';
-import { GqlContext } from 'src/_common/graphql/graphql-context.type';
+import { Injectable } from '@nestjs/common';
+import { BaseHttpException } from 'src/_common/exceptions/base-http-exception';
+import { ErrorCodeEnum } from 'src/_common/exceptions/error-code.enum';
 import { CreateSecurityGroupInput } from './inputs/create-security-group.input';
 import { DeleteSecurityGroupInput } from './inputs/delete-security-group.input';
 import { SecurityGroup } from './security-group.model';
 
 @Injectable()
 export class SecurityGroupService {
-  constructor(@Inject(CONTEXT) private readonly context: GqlContext) {}
-
   async createSecurityGroup(input: CreateSecurityGroupInput): Promise<SecurityGroup> {
     const otherSecurityGroupWithSameName = await SecurityGroup.findOne({
       where: { groupName: input.groupName }
     });
     if (otherSecurityGroupWithSameName)
-      throw new HttpException('Security group with same name already exist', 614);
+      throw new BaseHttpException(ErrorCodeEnum.SAME_SECURITY_GROUP);
     return await SecurityGroup.create(input);
   }
 
@@ -25,7 +23,7 @@ export class SecurityGroupService {
   async deleteSecurityGroup(input: DeleteSecurityGroupInput) {
     const group = await this.securityGroupOrError(input.securityGroupId);
     if (group.groupName === 'SuperAdmin')
-      throw new HttpException('Can not delete super admin group', 615);
+      throw new BaseHttpException(ErrorCodeEnum.CAN_NOT_DELETE_SUPER_ADMIN_GROUP);
     await SecurityGroup.destroy({ where: { id: input.securityGroupId } });
     return true;
   }
@@ -34,7 +32,7 @@ export class SecurityGroupService {
     const securityGroup = await SecurityGroup.findOne({
       where: { id: securityGroupId }
     });
-    if (!securityGroup) throw new HttpException('Security group does not exist', 616);
+    if (!securityGroup) throw new BaseHttpException(ErrorCodeEnum.SECURITY_GROUP_NOT_EXIST);
     return securityGroup;
   }
 }

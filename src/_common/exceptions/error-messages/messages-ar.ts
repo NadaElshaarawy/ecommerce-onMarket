@@ -8,5 +8,8 @@ export const arErrorMessage: IErrorMessage = {
   INVALID_CREDENTIALS: 'Invalid credentials',
   BLOCKED_USER: 'Blocked user',
   USER_DOES_NOT_EXIST: 'User does not exist',
-  ITEM_NOT_EXIST: 'Item not exist'
+  ITEM_NOT_EXIST: 'Item not exist',
+  SAME_SECURITY_GROUP: 'Security group with same name already exist',
+  CAN_NOT_DELETE_SUPER_ADMIN_GROUP: 'You can not delete super admin security group',
+  SECURITY_GROUP_NOT_EXIST: 'Security group does not exist'
 };

@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { isISO31661Alpha2 } from 'class-validator';
 import { Request } from 'express';
 import { User } from 'src/user/models/user.model';
@@ -65,7 +65,7 @@ export class AuthService {
 
   async errorIfUserWithEmailExists(email?: string) {
     if (email && (await User.findOne({ where: { email } })))
-      throw new HttpException('email already exist', 611);
+      throw new BaseHttpException(ErrorCodeEnum.EMAIL_ALREADY_EXISTS);
   }
 
   generateAuthToken(id: string): string {
@@ -89,14 +89,14 @@ export class AuthService {
 
   async getValidUserForLoginOrError(where: WhereOptions): Promise<User> {
     const user = await User.findOne({ where });
-    if (!user) throw new HttpException('Incorrect phone or password', 612);
-    if (user.isBlocked) throw new HttpException('Blocked user', 613);
+    if (!user) throw new BaseHttpException(ErrorCodeEnum.INVALID_CREDENTIALS);
+    if (user.isBlocked) throw new BaseHttpException(ErrorCodeEnum.BLOCKED_USER);
     return user;
   }
 
   async matchPassword(password: string, hash: string) {
     const isMatched = await bcrypt.compare(password, hash);
-    if (!isMatched) throw new HttpException('Incorrect phone or password', 612);
+    if (!isMatched) throw new BaseHttpException(ErrorCodeEnum.INVALID_CREDENTIALS);
   }
 
   async login(input: LoginInput): Promise<User> {
