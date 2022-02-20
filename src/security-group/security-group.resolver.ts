@@ -7,7 +7,10 @@ import { CreateSecurityGroupInput } from './inputs/create-security-group.input';
 import { SecurityGroupInput } from './inputs/security-group.input';
 import { getAllPermissions, SecurityGroupPermissionsEnum } from './security-group-permissions';
 import { SecurityGroup } from './security-group.model';
-import { securityGroupResponse, securityGroupsArrayResponse } from './security-group.response';
+import {
+  gqlSecurityGroupResponse,
+  gqlSecurityGroupsArrayResponse
+} from './security-group.response';
 import { SecurityGroupService } from './security-group.service';
 @UseGuards(AuthGuard)
 @Resolver(of => SecurityGroup)
@@ -16,24 +19,24 @@ export class SecurityGroupResolver {
 
   //** --------------------- QUERIES --------------------- */
 
-  @Query(returns => securityGroupsArrayResponse)
+  @Query(returns => gqlSecurityGroupsArrayResponse)
   async securityGroups() {
     return await this.securityGroupService.securityGroups();
   }
 
-  @Query(returns => securityGroupResponse)
+  @Query(returns => gqlSecurityGroupResponse)
   async securityGroup(@Args() input: SecurityGroupInput) {
     return await this.securityGroupService.securityGroupOrError(input.securityGroupId);
   }
 
-  @Query(returns => securityGroupsArrayResponse)
+  @Query(returns => gqlSecurityGroupsArrayResponse)
   async getAllPermissions() {
     return getAllPermissions();
   }
 
   //** --------------------- MUTATIONS --------------------- */
   @HasPermission(SecurityGroupPermissionsEnum.CREATE_SECURITY_GROUPS)
-  @Mutation(returns => securityGroupResponse)
+  @Mutation(returns => gqlSecurityGroupResponse)
   async createSecurityGroup(@Args('input') input: CreateSecurityGroupInput) {
     return await this.securityGroupService.createSecurityGroup(input);
   }

@@ -1,5 +1,6 @@
 import { Mutation, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { SecurityGroup } from 'src/security-group/security-group.model';
+import { GqlBooleanResponse } from 'src/_common/graphql/graphql-response';
 import { Timestamp } from 'src/_common/graphql/timestamp.scalar';
 import { User } from '../models/user.model';
 import { UserDataloader } from '../user.dataloader';
@@ -15,7 +16,7 @@ export class UserResolver {
   //** --------------------- QUERIES --------------------- */
 
   //** --------------------- MUTATIONS --------------------- */
-  @Mutation(returns => Boolean)
+  @Mutation(returns => GqlBooleanResponse)
   async seedAdmin() {
     return await this.userService.seedAdmin();
   }

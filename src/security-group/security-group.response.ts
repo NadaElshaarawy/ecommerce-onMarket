@@ -1,6 +1,6 @@
 import { generateGqlResponseType } from 'src/_common/graphql/graphql-response';
 import { SecurityGroup } from './security-group.model';
 
-export let securityGroupsPaginationResponse = generateGqlResponseType(Array(SecurityGroup));
-export let securityGroupsArrayResponse = generateGqlResponseType(Array(SecurityGroup), true);
-export let securityGroupResponse = generateGqlResponseType(SecurityGroup);
+export let gqlSecurityGroupsPaginationResponse = generateGqlResponseType(Array(SecurityGroup));
+export let gqlSecurityGroupsArrayResponse = generateGqlResponseType(Array(SecurityGroup), true);
+export let gqlSecurityGroupResponse = generateGqlResponseType(SecurityGroup);

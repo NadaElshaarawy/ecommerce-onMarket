@@ -1,5 +1,5 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { User } from 'src/user/models/user.model';
+import { gqlUserResponse } from 'src/user/user.response';
 import { AuthService } from './auth.service';
 import { LoginInput } from './inputs/login.input';
 import { SignUpInput } from './inputs/sign-up.input';
@@ -11,12 +11,12 @@ export class AuthResolver {
   //** --------------------- QUERIES --------------------- */
 
   //** --------------------- MUTATIONS --------------------- */
-  @Mutation(returns => User)
+  @Mutation(returns => gqlUserResponse)
   async signup(@Args('input') input: SignUpInput) {
     return await this.authService.signup(input);
   }
 
-  @Mutation(returns => User)
+  @Mutation(returns => gqlUserResponse)
   async login(@Args('input') input: LoginInput) {
     return await this.authService.login(input);
   }

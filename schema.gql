@@ -66,6 +66,18 @@ type GqlBooleanResponse {
   message: String
 }
 
+type GqlUsersPagination {
+  items: [User]
+  pageInfo: PageInfo!
+}
+
+type GqlUserResponse {
+  data: User
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
 type GqlItemsPagination {
   items: [Item]
   pageInfo: PageInfo!
@@ -129,9 +141,9 @@ input ItemsFilter {
 }
 
 type Mutation {
-  seedAdmin: Boolean!
-  signup(input: SignUpInput!): User!
-  login(input: LoginInput!): User!
+  seedAdmin: GqlBooleanResponse!
+  signup(input: SignUpInput!): GqlUserResponse!
+  login(input: LoginInput!): GqlUserResponse!
   createItemBoard(input: CreateItemInput!): GqlItemResponse!
   updateItemBoard(input: UpdateItemInput!): GqlItemResponse!
   deleteItemBoard(itemId: String!): GqlBooleanResponse!
