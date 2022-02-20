@@ -14,6 +14,7 @@ import { SecurityGroupModule } from './security-group/security-group.module';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { HttpExceptionFilter } from './_common/exceptions/exception-filter';
 import { GqlResponseInterceptor } from './_common/graphql/graphql-response.interceptor';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { GqlResponseInterceptor } from './_common/graphql/graphql-response.inter
     AuthModule,
     HelperModule,
     ItemModule,
-    SecurityGroupModule
+    SecurityGroupModule,
+    OrderModule
   ],
   providers: [
     Timestamp,
