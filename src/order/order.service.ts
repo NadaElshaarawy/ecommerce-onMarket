@@ -52,8 +52,7 @@ export class OrderService {
 
   async cancelOrder(orderId: string): Promise<Order> {
     const { currentUser } = this.context;
-    const order = await Order.findOne({ where: { id: orderId } });
-    if (!order) throw new BaseHttpException(ErrorCodeEnum.ORDER_NOT_EXIST);
+    const order = await this.orderOrError(orderId);
 
     if (order.userId !== currentUser.id)
       throw new BaseHttpException(ErrorCodeEnum.ORDER_NOT_BELONGS_TO_USER);
@@ -62,5 +61,16 @@ export class OrderService {
       throw new BaseHttpException(ErrorCodeEnum.ORDER_INCORRECT_STATUS);
 
     return await order.update({ orderStatus: OrderStatusEnum.CANCELED });
+  }
+
+  async orderOrError(orderId: string): Promise<Order> {
+    const order = await Order.findOne({ where: { id: orderId } });
+    if (!order) throw new BaseHttpException(ErrorCodeEnum.ORDER_NOT_EXIST);
+    return order;
+  }
+
+  async markOrderAsCompletedBoard(orderId: string): Promise<Order> {
+    const order = await this.orderOrError(orderId);
+    return await order.update({ orderStatus: OrderStatusEnum.COMPLETED });
   }
 }

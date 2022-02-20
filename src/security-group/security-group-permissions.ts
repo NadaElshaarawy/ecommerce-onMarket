@@ -21,10 +21,16 @@ export enum ItemPermissionsEnum {
   DELETE_ITEMS = 'DELETE_ITEMS'
 }
 
+export enum OrderPermissionsEnum {
+  READ_ORDERS = 'READ_ORDERS',
+  UPDATE_ORDERS = 'UPDATE_ORDERS'
+}
+
 export const permissions = {
   users: Object.keys(UserPermissionsEnum),
   securityGroups: Object.keys(SecurityGroupPermissionsEnum),
-  items: Object.keys(ItemPermissionsEnum)
+  items: Object.keys(ItemPermissionsEnum),
+  orders: Object.keys(ItemPermissionsEnum)
 };
 
 export function getAllPermissions(): string[] {

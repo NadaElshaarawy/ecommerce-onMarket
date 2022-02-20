@@ -200,6 +200,7 @@ type Mutation {
   createSecurityGroup(input: CreateSecurityGroupInput!): GqlSecurityGroupResponse!
   submitOrder: GqlOrderResponse!
   cancelOrder(orderId: String!): GqlOrderResponse!
+  markOrderAsCompletedBoard(orderId: String!): GqlOrderResponse!
   addToCart(input: AddToCartInput!): GqlCartItemResponse!
   updateCartItem(input: UpdateCartItemInput!): GqlCartItemResponse!
   deleteCartItem(cartItemId: String!): GqlBooleanResponse!
