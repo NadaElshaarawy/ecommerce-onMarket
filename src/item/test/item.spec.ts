@@ -98,4 +98,34 @@ describe('ItemService', () => {
       }
     });
   });
+
+  describe('itemOrError', () => {
+    it('throw exception if item not exist', async () => {
+      const itemId = '1';
+      let notFoundItem = jest.fn().mockReturnValue(Promise.resolve(null));
+      jest.spyOn(Item, 'findOne').mockImplementation(notFoundItem);
+      try {
+        await new ItemService().itemOrError(itemId);
+      } catch (e) {
+        expect(e).toBeInstanceOf(BaseHttpException);
+        expect(e.getStatus()).toBe(607);
+      }
+    });
+
+    it('item', async () => {
+      const itemId = '1';
+
+      const item = { id: '1', name: 'name', price: 100 };
+      let ItemBeforeUpdate = jest.fn().mockReturnValue(Promise.resolve(item));
+      jest.spyOn(Item, 'findOne').mockImplementation(ItemBeforeUpdate);
+
+      try {
+        const res = await new ItemService().itemOrError(itemId);
+        expect(res.id).toBe('1');
+        expect(Item.findOne).toBeCalledTimes(1);
+      } catch (e) {
+        expect(e).toBeNull();
+      }
+    });
+  });
 });
