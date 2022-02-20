@@ -15,6 +15,7 @@ import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { HttpExceptionFilter } from './_common/exceptions/exception-filter';
 import { GqlResponseInterceptor } from './_common/graphql/graphql-response.interceptor';
 import { OrderModule } from './order/order.module';
+import { CartItemModule } from './cart/cart.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { OrderModule } from './order/order.module';
     HelperModule,
     ItemModule,
     SecurityGroupModule,
-    OrderModule
+    OrderModule,
+    CartItemModule
   ],
   providers: [
     Timestamp,
