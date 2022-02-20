@@ -108,4 +108,14 @@ export class OrderService {
       paginate.limit
     );
   }
+
+  async myOrder(orderId: string): Promise<Order> {
+    const { currentUser } = this.context;
+    const order = await this.orderOrError(orderId);
+
+    if (order.userId !== currentUser.id)
+      throw new BaseHttpException(ErrorCodeEnum.ORDER_NOT_BELONGS_TO_USER);
+
+    return await Order.findOne({ where: { id: orderId } });
+  }
 }

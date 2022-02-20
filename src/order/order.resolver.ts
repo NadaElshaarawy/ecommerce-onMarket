@@ -51,4 +51,10 @@ export class OrderResolver {
   ) {
     return await this.orderService.ordersBoard(paginate, filter);
   }
+
+  @UseGuards(AuthGuard)
+  @Query(returns => gqlOrderResponse)
+  async myOrder(@Args() input: OrderInput) {
+    return await this.orderService.myOrder(input.orderId);
+  }
 }

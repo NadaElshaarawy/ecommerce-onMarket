@@ -182,6 +182,7 @@ type Query {
   getAllPermissions: GqlSecurityGroupsResponse!
   myOrders(filter: OrdersFilter!, paginate: PaginatorInput!): GqlOrdersResponse!
   ordersBoard(filter: OrdersFilterBoard!, paginate: PaginatorInput!): GqlOrdersResponse!
+  myOrder(orderId: String!): GqlOrderResponse!
   getCartItems(paginate: PaginatorInput!): GqlCartItemsResponse!
 }
 
