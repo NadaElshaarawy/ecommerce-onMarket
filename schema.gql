@@ -139,6 +139,13 @@ type GqlOrdersPagination {
   pageInfo: PageInfo!
 }
 
+type GqlOrdersResponse {
+  data: GqlOrdersPagination
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
 type GqlOrderResponse {
   data: Order
   code: Int!
@@ -173,6 +180,8 @@ type Query {
   securityGroups: GqlSecurityGroupsResponse!
   securityGroup(securityGroupId: String!): GqlSecurityGroupResponse!
   getAllPermissions: GqlSecurityGroupsResponse!
+  myOrders(filter: OrdersFilter!, paginate: PaginatorInput!): GqlOrdersResponse!
+  ordersBoard(filter: OrdersFilterBoard!, paginate: PaginatorInput!): GqlOrdersResponse!
   getCartItems(paginate: PaginatorInput!): GqlCartItemsResponse!
 }
 
@@ -188,6 +197,15 @@ input ItemFilterBoard {
 
 input ItemsFilter {
   searchKey: String
+}
+
+input OrdersFilter {
+  status: OrderStatusEnum
+}
+
+input OrdersFilterBoard {
+  userId: ID
+  status: OrderStatusEnum
 }
 
 type Mutation {

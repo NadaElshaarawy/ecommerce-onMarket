@@ -9,6 +9,10 @@ import { OrderLine } from './models/order-line.model';
 import { BaseHttpException } from 'src/_common/exceptions/base-http-exception';
 import { ErrorCodeEnum } from 'src/_common/exceptions/error-code.enum';
 import { OrderStatusEnum } from './order.type';
+import { PaginatorInput } from 'src/_common/paginator/paginator.input';
+import { OrdersFilter } from './inputs/order-filter.input';
+import { PaginationRes } from 'src/_common/paginator/paginator.types';
+import { OrdersFilterBoard } from './inputs/order-filter-board.input';
 
 @Injectable()
 export class OrderService {
@@ -72,5 +76,36 @@ export class OrderService {
   async markOrderAsCompletedBoard(orderId: string): Promise<Order> {
     const order = await this.orderOrError(orderId);
     return await order.update({ orderStatus: OrderStatusEnum.COMPLETED });
+  }
+
+  async myOrders(
+    paginate: PaginatorInput = {},
+    filter: OrdersFilter = {}
+  ): Promise<PaginationRes<Order>> {
+    const { currentUser } = this.context;
+    return await Order.paginate(
+      {
+        userId: currentUser.id,
+        ...(filter.status && { orderStatus: filter.status })
+      },
+      '-createdAt',
+      paginate.page,
+      paginate.limit
+    );
+  }
+
+  async ordersBoard(
+    paginate: PaginatorInput = {},
+    filter: OrdersFilterBoard = {}
+  ): Promise<PaginationRes<Order>> {
+    return await Order.paginate(
+      {
+        ...(filter.status && { orderStatus: filter.status }),
+        ...(filter.userId && { orderStatus: filter.status })
+      },
+      '-createdAt',
+      paginate.page,
+      paginate.limit
+    );
   }
 }
