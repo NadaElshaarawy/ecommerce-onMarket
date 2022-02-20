@@ -6,6 +6,9 @@ import { GqlContext } from 'src/_common/graphql/graphql-context.type';
 import { Sequelize } from 'sequelize';
 import { Order } from './models/order.model';
 import { OrderLine } from './models/order-line.model';
+import { BaseHttpException } from 'src/_common/exceptions/base-http-exception';
+import { ErrorCodeEnum } from 'src/_common/exceptions/error-code.enum';
+import { OrderStatusEnum } from './order.type';
 
 @Injectable()
 export class OrderService {
@@ -13,6 +16,15 @@ export class OrderService {
     @Inject(CONTEXT) private readonly context: GqlContext,
     @Inject('SEQUELIZE') private readonly sequelize: Sequelize
   ) {}
+
+  private calculateTotalAmountForOrder(cartItems: CartItem[]) {
+    let totalAmount = 0;
+    for (let cartItem of cartItems) {
+      totalAmount += cartItem.quantity * cartItem.item.price;
+    }
+    return totalAmount;
+  }
+
   async submitOrder(): Promise<Order> {
     const { currentUser } = this.context;
     const cartItems = await CartItem.findAll({
@@ -38,11 +50,17 @@ export class OrderService {
     });
   }
 
-  private calculateTotalAmountForOrder(cartItems: CartItem[]) {
-    let totalAmount = 0;
-    for (let cartItem of cartItems) {
-      totalAmount += cartItem.quantity * cartItem.item.price;
-    }
-    return totalAmount;
+  async cancelOrder(orderId: string): Promise<Order> {
+    const { currentUser } = this.context;
+    const order = await Order.findOne({ where: { id: orderId } });
+    if (!order) throw new BaseHttpException(ErrorCodeEnum.ORDER_NOT_EXIST);
+
+    if (order.userId !== currentUser.id)
+      throw new BaseHttpException(ErrorCodeEnum.ORDER_NOT_BELONGS_TO_USER);
+
+    if (order.orderStatus !== OrderStatusEnum.NEW)
+      throw new BaseHttpException(ErrorCodeEnum.ORDER_INCORRECT_STATUS);
+
+    return await order.update({ orderStatus: OrderStatusEnum.CANCELED });
   }
 }
