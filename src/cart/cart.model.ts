@@ -1,14 +1,19 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import {
+  AllowNull,
+  BelongsTo,
   Column,
   CreatedAt,
   DataType,
   Default,
+  ForeignKey,
   Model,
   PrimaryKey,
   Table,
   UpdatedAt
 } from 'sequelize-typescript';
+import { Item } from 'src/item/item.model';
+import { User } from 'src/user/models/user.model';
 import { paginate } from 'src/_common/paginator/paginator.service';
 
 @Table({
@@ -23,6 +28,27 @@ export class CartItem extends Model<CartItem> {
   @Column({ type: DataType.UUID })
   @Field(() => ID)
   id: string;
+
+  @ForeignKey(() => User)
+  @AllowNull(false)
+  @Column({ onDelete: 'CASCADE', onUpdate: 'CASCADE', type: DataType.UUID })
+  userId: string;
+
+  @BelongsTo(() => User)
+  user: User;
+
+  @ForeignKey(() => Item)
+  @AllowNull(false)
+  @Column({ onDelete: 'CASCADE', onUpdate: 'CASCADE', type: DataType.UUID })
+  itemId: string;
+
+  @BelongsTo(() => Item)
+  item: User;
+
+  @AllowNull(false)
+  @Column({ type: DataType.INTEGER })
+  @Field(type => Int)
+  quantity: number;
 
   @CreatedAt
   @Column({ type: DataType.DATE })

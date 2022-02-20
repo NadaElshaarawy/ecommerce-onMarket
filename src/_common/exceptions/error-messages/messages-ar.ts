@@ -11,5 +11,7 @@ export const arErrorMessage: IErrorMessage = {
   ITEM_NOT_EXIST: 'Item not exist',
   SAME_SECURITY_GROUP: 'Security group with same name already exist',
   CAN_NOT_DELETE_SUPER_ADMIN_GROUP: 'You can not delete super admin security group',
-  SECURITY_GROUP_NOT_EXIST: 'Security group does not exist'
+  SECURITY_GROUP_NOT_EXIST: 'Security group does not exist',
+  CART_ITEM_NOT_EXIST: 'Cart item not exist',
+  CART_ITEM_NOT_BELONGS_TO_USER: 'This cart item not belongs to you'
 };

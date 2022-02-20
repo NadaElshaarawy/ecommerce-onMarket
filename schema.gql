@@ -51,6 +51,12 @@ type Item {
   isActive: Boolean!
 }
 
+type CartItem {
+  id: ID!
+  quantity: Int!
+  item: Item
+}
+
 type PageInfo {
   totalCount: Int!
   totalPages: Int!
@@ -116,6 +122,25 @@ type GqlSecurityGroupResponse {
   message: String
 }
 
+type GqlCartItemsPagination {
+  items: [CartItem]
+  pageInfo: PageInfo!
+}
+
+type GqlCartItemsResponse {
+  data: GqlCartItemsPagination
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
+type GqlCartItemResponse {
+  data: CartItem
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
 type Query {
   itemBoard(itemId: String!): GqlItemResponse!
   singleItemForCustomer(itemId: String!): GqlItemResponse!
@@ -124,6 +149,7 @@ type Query {
   securityGroups: GqlSecurityGroupsResponse!
   securityGroup(securityGroupId: String!): GqlSecurityGroupResponse!
   getAllPermissions: GqlSecurityGroupsResponse!
+  getCartItems(paginate: PaginatorInput!): GqlCartItemsResponse!
 }
 
 input PaginatorInput {
@@ -148,6 +174,10 @@ type Mutation {
   updateItemBoard(input: UpdateItemInput!): GqlItemResponse!
   deleteItemBoard(itemId: String!): GqlBooleanResponse!
   createSecurityGroup(input: CreateSecurityGroupInput!): GqlSecurityGroupResponse!
+  addToCart(input: AddToCartInput!): GqlCartItemResponse!
+  updateCartItem(input: UpdateCartItemInput!): GqlCartItemResponse!
+  deleteCartItem(cartItemId: String!): GqlBooleanResponse!
+  clearCart: GqlBooleanResponse!
 }
 
 input SignUpInput {
@@ -185,4 +215,14 @@ input CreateSecurityGroupInput {
   groupName: String!
   description: String
   permissions: [String!]!
+}
+
+input AddToCartInput {
+  itemId: ID!
+  quantity: Int!
+}
+
+input UpdateCartItemInput {
+  cartItemId: ID!
+  quantity: Int
 }
