@@ -15,8 +15,8 @@
     "test:cov": "cross-env NODE_ENV=testing node --max-old-space-size=8192 --expose-gc ./node_modules/jest/bin/jest --detectOpenHandles --forceExit --coverage --logHeapUsage --verbose --runInBand"
   },
   "dependencies": {
-    "@nestjs/common": "^7.6.13",
     "@nestjs/cli": "^7.5.6",
+    "@nestjs/common": "^7.6.13",
     "@nestjs/config": "^0.6.3",
     "@nestjs/core": "^7.6.13",
     "@nestjs/graphql": "^7.6.0",
@@ -39,6 +39,7 @@
     "graphql-upload": "^11.0.0",
     "helmet": "^4.1.1",
     "ioredis": "^4.27.8",
+    "jasmine": "^4.0.2",
     "jsonwebtoken": "^8.5.1",
     "nestjs-pino": "^1.2.0",
     "pg": "^8.3.3",

@@ -1,8 +1,3 @@
-import { INestApplication } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
-import { Sequelize } from 'sequelize';
-import { AppModule } from 'src/app.module';
-import { UserService } from 'src/user/user.service';
 import { BaseHttpException } from 'src/_common/exceptions/base-http-exception';
 import { CreateItemInput } from '../inputs/create-item.input';
 import { DeleteItemInput } from '../inputs/delete-item.input';

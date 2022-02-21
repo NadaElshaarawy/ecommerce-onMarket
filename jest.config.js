@@ -15,7 +15,7 @@ module.exports = {
     './src/index-minimal': '<rootDir>/node_modules/@apollo/protobufjs/src/index-minimal',
     'src/(.*)': '<rootDir>/src/$1'
   },
-  setupFilesAfterEnv: [],
+  setupFilesAfterEnv: ['<rootDir>/test/before-test-run.ts'],
   displayName: {
     name: 'ONMARKET',
     color: 'blue'

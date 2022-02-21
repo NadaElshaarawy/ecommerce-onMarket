@@ -55,8 +55,6 @@ export class CartItemResolver {
   //** ------------------- DATALOADER ------------------- */
   @ResolveField(type => Item, { nullable: true })
   item(cartItem: CartItem) {
-    console.log('test heroku auto deploy');
-
     return this.cartItemDataloader.itemLoader.load(cartItem.itemId);
   }
 }

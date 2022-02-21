@@ -100,3 +100,7 @@ mutation{
   "authorization" : "Bearer current user token"
 }
 ```
+
+## Live demo
+
+[Live demo end point link](https://dry-refuge-06691.herokuapp.com/graphql)
