@@ -91,3 +91,5 @@ public/*
 
 # npm run warning logs
 warn.log
+
+package-lock.json
