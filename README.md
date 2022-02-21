@@ -6,8 +6,8 @@
 
 ## Features
 
-- Signup and login using jwt token.
-- Crud for items by dashboard admin.
+- Signup and login using jwt token
+- Crud for items by dashboard admin
 - Cart api.
 - Orders and Order lines
 - Security groups to make admin permissions
@@ -28,7 +28,7 @@ DB_PORT=
 DB_PASS=
 ```
 
-Install the dependencies and devDependencies and start the server.
+Install the dependencies and devDependencies and start the server
 
 ```sh
 npm i
@@ -53,8 +53,8 @@ HOST=localhost
 
 ### This end point contains:
 
-- queries: find one or find all for every functions.
-- mutations: the rest crud operations like create, update and delete.
+- queries: find one or find all for every functions
+- mutations: the rest crud operations like create, update and delete
 - docs tap: cantain the self documentation for graphql api
 - schema tap: contain all types created by default using schema first approach
 
@@ -71,7 +71,7 @@ mutation{
     firstName:"on",
     lastName:"market",
     phone:"+201011122233",
-    birthDate:1645151221010,s
+    birthDate:1645151221010,
     password: "123456",
     country:"eg"
   }){
@@ -87,7 +87,7 @@ mutation{
 }
 ```
 
-> This mutation return token with its result data.
+> This mutation return token with its result data
 > the token used on Authorization header for queries and mutations that need to be authorized
 
 ### To make the request authorized
@@ -100,3 +100,7 @@ mutation{
   "authorization" : "Bearer current user token"
 }
 ```
+
+## Live demo
+
+[Live demo end point link](https://dry-refuge-06691.herokuapp.com/graphql)
